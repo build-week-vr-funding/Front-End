@@ -25,7 +25,7 @@ export default class App extends Component {
     axios
     .post('https://vrfp.herokuapp.com/auth/register', user)
     .then(res => {console.log(res)})
-    .catch(err => {console.log(err)})
+    .catch(err => {console.log(err.response)})
     // console.log(this.state.users)
   }
 
