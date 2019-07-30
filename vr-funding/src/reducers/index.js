@@ -1,3 +1,5 @@
+import { LOGIN_SUCCESS } from '../actions'
+
 const initialState = {
     users: [],
     projects: [],

@@ -1,4 +1,5 @@
 import React from 'react';
+import setToken from '../token'
 
 export default class LogIn extends React.Component {
     constructor(props) {
@@ -9,9 +10,6 @@ export default class LogIn extends React.Component {
         }
     }
 
-    submitHandler = evt => {
-        evt.preventDefault();
-    }
 
     changeHandler = evt => {
         this.setState({ [evt.target.name]: evt.target.value})
