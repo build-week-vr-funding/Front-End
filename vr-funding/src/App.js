@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './App.css';
-import Register from './components/Register'
 
-function App() {
-  return (
-    <div className="App">
-      <Register />
-    </div>
-  );
+
+import LoginForm from './components/LogInForm';
+
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+  }
+
+
+  render() {
+    return (
+      <div className="App">
+        <LoginForm />
+      </div>
+    );
+  }
 }
-
-export default App;
