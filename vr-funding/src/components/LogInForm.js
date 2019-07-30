@@ -1,28 +1,51 @@
 import React from 'react';
-import setToken from '../token'
+import { connect } from 'react-redux';
 
-export default class LogIn extends React.Component {
+import { login } from '../actions';
+
+class LoginForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            credentials: {
             username: '',
-            password: ''
+            password: ''}
         }
     }
 
 
-    changeHandler = evt => {
-        this.setState({ [evt.target.name]: evt.target.value})
+    changeHandler = e => {
+        this.setState({
+            credentails: {
+                ...this.state.credentails,
+                [e.target.name]: e.target.value
+            }
+        })
+    }
+
+    login = e => {
+        e.preventDefault();
+        this.props.login(this.state.credentials)
     }
 
     render() {
         return (
-            <div className="register-containr">
-                <h1 className="register-header">Log In</h1>
+            <div className="log-in-containr">
+                <h1 className="log-in-header">Log In</h1>
                 <div className="form-container">
-                    <form className="register-form" onSubmit={this.submitHandler}>
-                        <input name="username" placeholder="Username" value={this.state.username} onChange={this.changeHandler} /><br />
-                        <input name="password" placeholder="Password" value={this.state.password} onChange={this.changeHandler} /><br />
+                    <form className="log-in-form" onSubmit={this.login}>
+                        <input 
+                            name="username" 
+                            placeholder="Username" 
+                            value={this.state.username} 
+                            onChange={this.changeHandler} 
+                        /><br />
+                        <input 
+                            name="password" 
+                            placeholder="Password" 
+                            value={this.state.password} 
+                            onChange={this.changeHandler} 
+                        /><br />
                         <button type="submit">Log In</button>
                     </form>
                 </div>
@@ -30,3 +53,10 @@ export default class LogIn extends React.Component {
         )
     }
 }
+
+const mapStateToProps = state => ({
+    error: state.error,
+    isLoggedIn: state.isLoggedIn
+});
+
+export default connect( mapStateToProps, { login } )(LoginForm)

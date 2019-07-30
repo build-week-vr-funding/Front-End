@@ -1,11 +1,20 @@
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+import axios from 'axios';
 
-export function login() {
-  return {
-    type: LOGIN_SUCCESS,
-    payload: {
-      token:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
-    }
-  };
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+export const LOGIN_START = 'LOGIN_START';
+
+export const login = creds => dispatch => {
+    dispatch({ type: LOGIN_START })
+    axios
+        .post('https://vrfp.herokuapp.com/auth/login', creds)
+        .then(res => {
+            console.log(res.data.user)
+            localStorage.setItem('token', res.data.payload)
+            dispatch({ 
+                type: LOGIN_SUCCESS, 
+                payload: res.data.user
+            })
+        })
+        .catch(err => console.log(err.response))
 }
