@@ -1,8 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom'
+import { registerUser } from '../actions';
 
-export default class Register extends React.Component {
-    constructor(props) {
-        super(props);
+class Register extends React.Component {
+    constructor() {
+        super();
         this.state = {
             username: '',
             password: '',
@@ -13,8 +16,9 @@ export default class Register extends React.Component {
 
     submitHandler = evt => {
         evt.preventDefault();
-        console.log(this.state)
-        this.props.createUser(this.state)
+        const { username, password, name, about } = this.state
+        console.log(username, password, name, about);
+        this.props.registerUser( username, password, name, about )
         this.setState({
             username: '',
             password: '',
@@ -28,19 +32,41 @@ export default class Register extends React.Component {
     }
 
     render() {
+        const { username, password, name, about } = this.state
+        const { isLoading, errorMessage } = this.props
         return (
             <div className="register-containr">
                 <h1 className="register-header">Create new user</h1>
                 <div className="form-container">
                     <form className="register-form" onSubmit={this.submitHandler}>
-                        <input name="username" placeholder="Username" value={this.state.username} onChange={this.changeHandler} /><br />
-                        <input name="password" placeholder="Password" value={this.state.password} onChange={this.changeHandler} /><br />
-                        <input name="name" placeholder="Name" value={this.state.name} onChange={this.changeHandler} /><br />
-                        <input name="about" placeholder="About" value={this.state.about} onChange={this.changeHandler} /><br />
-                        <button type="submit">Submit</button>
+                        {errorMessage && <p className="error">{errorMessage}</p>}
+
+                        <input name="username" placeholder="Username" value={username} onChange={this.changeHandler} /><br />
+                        <input name="password" placeholder="Password" value={password} onChange={this.changeHandler} /><br />
+                        <input name="name" placeholder="Name" value={name} onChange={this.changeHandler} /><br />
+                        <input name="about" placeholder="About" value={about} onChange={this.changeHandler} /><br />
+                        {isLoading
+                            ? <p>Logging in...</p>
+                            : <button type="submit">Register</button>}
                     </form>
                 </div>
             </div>
         )
     }
 }
+
+const mapStateToProps = (state) => ({
+	isLoading: state.isLoading,
+	errorMessage: state.errorMessage,
+})
+
+const mapDispatchToProps = {
+	registerUser
+}
+
+export default withRouter(
+    connect( 
+        mapStateToProps, 
+        mapDispatchToProps 
+        )(Register)
+) 
