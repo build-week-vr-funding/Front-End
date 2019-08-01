@@ -1,11 +1,10 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom'
-import { registerUser } from '../actions';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 class Register extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             username: '',
             password: '',
@@ -17,8 +16,17 @@ class Register extends React.Component {
     submitHandler = evt => {
         evt.preventDefault();
         const { username, password, name, about } = this.state
-        console.log(username, password, name, about);
-        this.props.registerUser( username, password, name, about )
+
+        const newUser = { username, password, name, about }
+        axios
+            .post('https://vrfp.herokuapp.com/auth/register', newUser ) 
+            .then(res => {
+                console.log(res)
+                this.props.history.push("/login")
+            })
+            .catch(err => {
+                console.log(err)
+            })
         this.setState({
             username: '',
             password: '',
@@ -33,40 +41,22 @@ class Register extends React.Component {
 
     render() {
         const { username, password, name, about } = this.state
-        const { isLoading, errorMessage } = this.props
         return (
             <div className="register-containr">
                 <h1 className="register-header">Create new user</h1>
                 <div className="form-container">
                     <form className="register-form" onSubmit={this.submitHandler}>
-                        {errorMessage && <p className="error">{errorMessage}</p>}
-
                         <input name="username" placeholder="Username" value={username} onChange={this.changeHandler} /><br />
                         <input name="password" placeholder="Password" value={password} onChange={this.changeHandler} /><br />
                         <input name="name" placeholder="Name" value={name} onChange={this.changeHandler} /><br />
                         <input name="about" placeholder="About" value={about} onChange={this.changeHandler} /><br />
-                        {isLoading
-                            ? <p>Logging in...</p>
-                            : <button type="submit">Register</button>}
+                        <button type="submit">Register</button>
                     </form>
+                    <Link to="/">Go Back</Link>
                 </div>
             </div>
         )
     }
 }
 
-const mapStateToProps = (state) => ({
-	isLoading: state.isLoading,
-	errorMessage: state.errorMessage,
-})
-
-const mapDispatchToProps = {
-	registerUser
-}
-
-export default withRouter(
-    connect( 
-        mapStateToProps, 
-        mapDispatchToProps 
-        )(Register)
-) 
+export default Register;

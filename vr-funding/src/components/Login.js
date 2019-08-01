@@ -1,11 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom'
-import { login } from '../actions';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
-class LoginForm extends React.Component {
-    constructor() {
-        super();
+
+
+class Login extends React.Component {
+    constructor(props) {
+        super(props);
         this.state = {
             username: '',
             password: ''
@@ -21,27 +22,27 @@ class LoginForm extends React.Component {
 
     handleSubmit = e => {
         e.preventDefault();
-        
         const { username, password } = this.state
-        this.props.login(username, password)
-            .then(() => {
-                this.props.history.push("/")
+
+        axios
+            .post('https://vrfp.herokuapp.com/auth/login', { username, password })
+            .then(res => {
+                localStorage.setItem('token', res.data.token)
+                console.log(res)
             })
             .catch(err => {
-                console.error(err)
+                console.log(err)
             })
     }
 
     render() {
         const { username, password } = this.state
-        const { isLoading, errorMessage } = this.props
         
         return (
             <div className="log-in-containr">
                 <h1 className="log-in-header">Log In</h1>
                 <div className="form-container">
                     <form className="log-in-form" onSubmit={this.handleSubmit}>
-                        {errorMessage && <p className="error">{errorMessage}</p>}
                         
                         <input 
                             name="username" 
@@ -55,29 +56,13 @@ class LoginForm extends React.Component {
                             value={password} 
                             onChange={this.changeHandler} 
                         /><br />
-
-                        {isLoading
-                            ? <p>Logging in...</p>
-                            : <button type="submit">Login</button>}
+                        <button type="submit">Login</button>
                     </form>
+                    <Link to="/">Go Back</Link>
                 </div>
             </div>
         )
     }
 }
 
-const mapStateToProps = (state) => ({
-	isLoading: state.isLoading,
-	errorMessage: state.errorMessage,
-})
-
-const mapDispatchToProps = {
-	login,
-}
-
-export default withRouter(
-    connect( 
-        mapStateToProps, 
-        mapDispatchToProps 
-        )(LoginForm)
-) 
+export default Login;
