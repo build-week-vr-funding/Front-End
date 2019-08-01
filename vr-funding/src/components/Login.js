@@ -28,7 +28,8 @@ class Login extends React.Component {
             .post('https://vrfp.herokuapp.com/auth/login', { username, password })
             .then(res => {
                 localStorage.setItem('token', res.data.token)
-                console.log(res)
+                this.props.handleLogin()
+                this.props.history.push('/dashboard')
             })
             .catch(err => {
                 console.log(err)

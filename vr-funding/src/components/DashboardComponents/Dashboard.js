@@ -9,11 +9,17 @@ export default class Dashboard extends React.Component {
             id: 0
         }
     }
+
+    logout = () => {
+        this.props.handleLogout()
+        this.props.history.push("/login")
+    }
+
     render() {
         return(
             <div className="dashboard-container">
                 <h1> Dashboard </h1>
-                
+                <button onClick={this.logout}>Logout</button>
             </div>
         )
     }
