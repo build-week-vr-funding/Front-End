@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom'
+import { Redirect, Route } from 'react-router-dom'
 import './App.css';
 
 import Navigation from './components/Navigation';
@@ -11,13 +11,23 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      userId: 0,
       loggedIn: localStorage.token ? true : false,
       loading: false
     }
   }
 
+  componentDidMount() {
+    const token = localStorage.getItem('token')
+    console.log('token', token);
+  }
+
+  updateUserId = (id) => {
+    this.setState({ userId: id })
+  }
+
   handleLogin = () => {
-    this.setState({ isLoggedIn: true })
+    this.setState({ loggedIn: true })
   }
 
   handleLogout = () => {
@@ -28,12 +38,19 @@ class App extends Component {
   }
 
   render() {
+    const { loggedIn, userId } = this.state
     return (
       <div className="App">
-        <Route path="/" exact component={Navigation} />
+        <Route exact path="/" render={() => (
+          loggedIn ? (
+            <Redirect to="/dashboard"/>
+          ) : (
+            <Navigation />
+          )
+        )}/>
         <Route path="/register" component={Register} />
-        <Route path="/login" render={(props) => <Login {...props} handleLogin={this.handleLogin} />} />
-        <Route path="/dashboard" render={(props) => <Dashboard {...props} handleLogout={this.handleLogout} loggedIn={this.state.loggedIn} />} />
+        <Route path="/login" render={(props) => <Login {...props} handleLogin={this.handleLogin} updateUserId={this.updateUserId} loggedIn={loggedIn} />} />
+        <Route path="/dashboard" render={(props) => <Dashboard {...props} userId={userId} handleLogout={this.handleLogout} loggedIn={loggedIn} />} />
       </div>
     )
   }

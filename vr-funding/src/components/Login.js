@@ -15,6 +15,7 @@ class Login extends React.Component {
 
 
     changeHandler = e => {
+        e.preventDefault();
 		this.setState({
 			[e.target.name]: e.target.value,
 		})
@@ -28,6 +29,7 @@ class Login extends React.Component {
             .post('https://vrfp.herokuapp.com/auth/login', { username, password })
             .then(res => {
                 localStorage.setItem('token', res.data.token)
+                this.props.updateUserId(res.data.user.id)
                 this.props.handleLogin()
                 this.props.history.push('/dashboard')
             })
@@ -37,6 +39,7 @@ class Login extends React.Component {
     }
 
     render() {
+        console.log(this.props.loggedIn)
         const { username, password } = this.state
         
         return (

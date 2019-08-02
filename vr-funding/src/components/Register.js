@@ -35,8 +35,8 @@ class Register extends React.Component {
         })
     }
 
-    changeHandler = evt => {
-        this.setState({ [evt.target.name]: evt.target.value})
+    changeHandler = e => {
+        this.setState({ [e.target.name]: e.target.value})
     }
 
     render() {

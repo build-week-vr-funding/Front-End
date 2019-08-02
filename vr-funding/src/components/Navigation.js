@@ -8,12 +8,13 @@ export default function Navigation() {
             <h1> VR Funding App </h1>
             <div className="nav-btn-container">
                 <Link to="/register">
-                    <button>Register New User</button>
+                    <button className="register-btn nav-btn" >Register New User</button>
                 </Link><br />
                 <Link to="/login">
-                    <button>Log In</button>
+                    <button className="login-btn nav-btn" >Log In</button>
                 </Link>
             </div>
         </div>
     )
+
 }
