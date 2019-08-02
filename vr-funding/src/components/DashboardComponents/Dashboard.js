@@ -1,23 +1,49 @@
 import React from 'react';
+import axios from 'axios';
+
 import ProjectList from './ProjectList';
+import CreateProject from './CreateProject';
 
 export default class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            user_id: 0,
             projects: [],
-            projectName: '',
-            projectType: '',
-            description: '',
-            fundingAmount: 0.0,
-            user_id: 0
         }
     }
+
+    componentDidMount() {
+        const id = localStorage.getItem('user_id')
+        this.setState({ user_id: id })
+        axios.get(`https://vrfp.herokuapp.com/projects/${id}`)
+        .then(res => {
+            this.setState({ projects: [res.data] })
+            console.log(this.state.user_id)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
+    logout = () => {
+        this.props.handleLogout()
+        this.props.history.push("/login")
+    }
+    
     render() {
+        console.log(this.props.loggedIn, 'user id', this.props.userId)
+        const greeting = `Welcome back ${localStorage.getItem('username')}`
         return(
             <div className="dashboard-container">
-                <h1> Dashboard </h1>
-                <ProjectList projects={this.state.projects} />
+                <h1 className="dashboard-header"> Dashboard </h1>
+                <p className="dashboard-greeting">{greeting}</p>
+                <div className="dashboard-projects-list">
+                <h2 className="projects-header">Projects:</h2>
+                    <ProjectList projects={this.state.projects} />
+                </div>
+                <CreateProject userId={this.state.userId} />
+                <button className="submit-btn" type="submit" onClick={this.logout}>Logout</button>
             </div>
         )
     }

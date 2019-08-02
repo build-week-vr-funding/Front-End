@@ -1,6 +1,8 @@
 import React from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
-export default class Register extends React.Component {
+class Register extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -13,8 +15,18 @@ export default class Register extends React.Component {
 
     submitHandler = evt => {
         evt.preventDefault();
-        console.log(this.state)
-        this.props.createUser(this.state)
+        const { username, password, name, about } = this.state
+        
+        const newUser = { username, password, name, about }
+        axios
+            .post('https://vrfp.herokuapp.com/auth/register', newUser ) 
+            .then(res => {
+                console.log(res)
+                this.props.history.push("/login")
+            })
+            .catch(err => {
+                console.log(err)
+            })
         this.setState({
             username: '',
             password: '',
@@ -23,24 +35,26 @@ export default class Register extends React.Component {
         })
     }
 
-    changeHandler = evt => {
-        this.setState({ [evt.target.name]: evt.target.value})
+    changeHandler = e => {
+        this.setState({ [e.target.name]: e.target.value})
     }
 
     render() {
+        const { username, password, name, about } = this.state
         return (
-            <div className="register-containr">
+            <div className="register-container">
                 <h1 className="register-header">Create new user</h1>
-                <div className="form-container">
                     <form className="register-form" onSubmit={this.submitHandler}>
-                        <input name="username" placeholder="Username" value={this.state.username} onChange={this.changeHandler} /><br />
-                        <input name="password" placeholder="Password" value={this.state.password} onChange={this.changeHandler} /><br />
-                        <input name="name" placeholder="Name" value={this.state.name} onChange={this.changeHandler} /><br />
-                        <input name="about" placeholder="About" value={this.state.about} onChange={this.changeHandler} /><br />
-                        <button type="submit">Submit</button>
+                        <input name="username" placeholder="Username" value={username} onChange={this.changeHandler} /><br />
+                        <input name="password" placeholder="Password" value={password} onChange={this.changeHandler} /><br />
+                        <input name="name" placeholder="Name" value={name} onChange={this.changeHandler} /><br />
+                        <input name="about" placeholder="About" value={about} onChange={this.changeHandler} /><br />
+                        <button className="submit-btn" type="submit">Register</button>
                     </form>
-                </div>
+                    <Link className="go-back-link" to="/">Go Back</Link>
             </div>
         )
     }
 }
+
+export default Register;
