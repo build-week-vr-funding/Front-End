@@ -143,6 +143,11 @@ input {
   background: #6B6E70;
 }
 
+.dashboard-greeting {
+  font-size: 20px;
+  color: #86C232;
+}
+
 .dashboard-projects-list {
   width: 100%;
   height: 400px;

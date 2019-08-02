@@ -33,9 +33,11 @@ export default class Dashboard extends React.Component {
     
     render() {
         console.log(this.props.loggedIn, 'user id', this.props.userId)
+        const greeting = `Welcome back ${localStorage.getItem('username')}`
         return(
             <div className="dashboard-container">
                 <h1 className="dashboard-header"> Dashboard </h1>
+                <p className="dashboard-greeting">{greeting}</p>
                 <div className="dashboard-projects-list">
                 <h2 className="projects-header">Projects:</h2>
                     <ProjectList projects={this.state.projects} />
