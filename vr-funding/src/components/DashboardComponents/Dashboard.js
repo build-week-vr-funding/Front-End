@@ -8,16 +8,18 @@ export default class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            user_id: 0,
             projects: [],
         }
     }
 
     componentDidMount() {
-        const id = this.props.userId
+        const id = localStorage.getItem('user_id')
+        this.setState({ user_id: id })
         axios.get(`https://vrfp.herokuapp.com/projects/${id}`)
         .then(res => {
             this.setState({ projects: [res.data] })
-            console.log(this.state.projects)
+            console.log(this.state.user_id)
         })
         .catch(err => {
             console.log(err)
@@ -33,11 +35,13 @@ export default class Dashboard extends React.Component {
         console.log(this.props.loggedIn, 'user id', this.props.userId)
         return(
             <div className="dashboard-container">
-                <h1> Dashboard </h1>
-                <h2>Projects:</h2>
-                <ProjectList projects={this.state.projects} />
-                <CreateProject userId={this.props.userId} />
-                <button type="submit" onClick={this.logout}>Logout</button>
+                <h1 className="dashboard-header"> Dashboard </h1>
+                <div className="dashboard-projects-list">
+                <h2 className="projects-header">Projects:</h2>
+                    <ProjectList projects={this.state.projects} />
+                </div>
+                <CreateProject userId={this.state.userId} />
+                <button className="submit-btn" type="submit" onClick={this.logout}>Logout</button>
             </div>
         )
     }

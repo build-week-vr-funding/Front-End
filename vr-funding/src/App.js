@@ -11,7 +11,6 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userId: 0,
       loggedIn: localStorage.token ? true : false,
       loading: false
     }
@@ -20,10 +19,6 @@ class App extends Component {
   componentDidMount() {
     const token = localStorage.getItem('token')
     console.log('token', token);
-  }
-
-  updateUserId = (id) => {
-    this.setState({ userId: id })
   }
 
   handleLogin = () => {

@@ -2,8 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-
-
 class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -29,7 +27,9 @@ class Login extends React.Component {
             .post('https://vrfp.herokuapp.com/auth/login', { username, password })
             .then(res => {
                 localStorage.setItem('token', res.data.token)
-                this.props.updateUserId(res.data.user.id)
+                localStorage.setItem('username', res.data.user.name)
+                localStorage.setItem('user_id', res.data.user.id)
+                console.log(localStorage.getItem('user_id'))
                 this.props.handleLogin()
                 this.props.history.push('/dashboard')
             })
@@ -45,7 +45,6 @@ class Login extends React.Component {
         return (
             <div className="log-in-containr">
                 <h1 className="log-in-header">Log In</h1>
-                <div className="form-container">
                     <form className="log-in-form" onSubmit={this.handleSubmit}>
                         
                         <input 
@@ -60,11 +59,10 @@ class Login extends React.Component {
                             value={password} 
                             onChange={this.changeHandler} 
                         /><br />
-                        <button type="submit">Login</button>
+                        <button className="submit-btn" type="submit">Login</button>
                     </form>
-                    <Link to="/">Go Back</Link>
+                    <Link className="go-back-link" to="/">Go Back</Link>
                 </div>
-            </div>
         )
     }
 }

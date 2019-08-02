@@ -8,19 +8,20 @@ export default class CreateProject extends React.Component {
             projectName: '',
             projectType: '',
             description: '',
-            fundingAmount: 0.0,
+            fundingAmount: '',
             user_id: 0
         }
     }
 
     componentDidMount() {
-        this.setState({ user_id: this.props.userId })
+        this.setState({ user_id: localStorage.getItem('user_id') })
     }
 
     submitHandler = e => {
         e.preventDefault();
-        console.log(this.state)
-        const { projectName, projectType, fundingAmount, description, user_id } = this.state
+        const { projectName, projectType, description } = this.state
+        const user_id = Number(this.state.user_id)
+        const fundingAmount = Number(this.state.fundingAmount)
         const token = localStorage.getItem('token')
         const requestOptions = {
             headers: {
@@ -28,8 +29,9 @@ export default class CreateProject extends React.Component {
             }
           }
         const newProject = { projectName, projectType, fundingAmount, description, user_id }
+        console.log('New Project', newProject)
         axios
-            .post('https://vrfp.herokuapp.com/projects', requestOptions, newProject)
+            .post('https://vrfp.herokuapp.com/projects',newProject, requestOptions)
             .then(res => {
                 console.log(res)
             })
@@ -45,7 +47,6 @@ export default class CreateProject extends React.Component {
     }
 
     changeHandler = e => {
-        console.log(e.target)
         this.setState({ [e.target.name]: e.target.value})
     }
 
@@ -55,11 +56,11 @@ export default class CreateProject extends React.Component {
             <div className="create-project-container">
                 <h3>Create new project</h3>
                 <form onSubmit={this.submitHandler}>
-                    <input name="projectName" placeholder="Project Name" value={projectName} onChange={this.changeHandler} />
-                    <input name="projectType" placeholder="Project Type" value={projectType} onChange={this.changeHandler} />
-                    <input type="number" name="fundingAmount" placeholder="Funding Amount" value={fundingAmount} onChange={this.changeHandler} />
-                    <input name="description" placeholder="Description" value={description} onChange={this.changeHandler} />
-                    <button type="submit">Create</button>
+                    <input name="projectName" placeholder="Project Name" value={projectName} onChange={this.changeHandler} /><br />
+                    <input name="projectType" placeholder="Project Type" value={projectType} onChange={this.changeHandler} /><br />
+                    <input name="fundingAmount" placeholder="Funding Amount" value={fundingAmount} onChange={this.changeHandler} /><br />
+                    <input name="description" placeholder="Description" value={description} onChange={this.changeHandler} /><br />
+                    <button type="submit">Create</button><br />
                 </form>
             </div>
         )
