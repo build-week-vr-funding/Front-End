@@ -54,13 +54,13 @@ export default class CreateProject extends React.Component {
         const { projectName, projectType, fundingAmount, description } = this.state
         return (
             <div className="create-project-container">
-                <h3>Create new project</h3>
-                <form onSubmit={this.submitHandler}>
-                    <input name="projectName" placeholder="Project Name" value={projectName} onChange={this.changeHandler} /><br />
-                    <input name="projectType" placeholder="Project Type" value={projectType} onChange={this.changeHandler} /><br />
-                    <input name="fundingAmount" placeholder="Funding Amount" value={fundingAmount} onChange={this.changeHandler} /><br />
-                    <input name="description" placeholder="Description" value={description} onChange={this.changeHandler} /><br />
-                    <button type="submit">Create</button><br />
+                <h3 className="create-project-header">Create new project</h3>
+                <form className="create-project-form" onSubmit={this.submitHandler}>
+                    <input className="create-project-input" name="projectName" placeholder="Project Name" value={projectName} onChange={this.changeHandler} /><br />
+                    <input className="create-project-input" name="projectType" placeholder="Project Type" value={projectType} onChange={this.changeHandler} /><br />
+                    <input className="create-project-input" name="fundingAmount" placeholder="Funding Amount" value={fundingAmount} onChange={this.changeHandler} /><br />
+                    <input className="create-project-input" name="description" placeholder="Description" value={description} onChange={this.changeHandler} /><br />
+                    <button className="create-project-submit-btn"type="submit">+</button><br />
                 </form>
             </div>
         )
