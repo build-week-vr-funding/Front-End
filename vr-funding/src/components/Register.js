@@ -22,7 +22,7 @@ class Register extends React.Component {
             .post('https://vrfp.herokuapp.com/auth/register', newUser ) 
             .then(res => {
                 console.log(res)
-                this.props.history.push("/login")
+                this.props.history.push("/")
             })
             .catch(err => {
                 console.log(err)
