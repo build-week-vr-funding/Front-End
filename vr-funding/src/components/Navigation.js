@@ -14,7 +14,7 @@ export default function Navigation() {
                     <button className="login-btn nav-btn" >Log In</button>
                 </Link>
             </div>
-            <a href="vrfunder.netlify.com" className="nav-web-link">Go back to website</a>
+            <a href="https://www.vrfunder.netlify.com" className="nav-web-link">Go back to website</a>
         </div>
     )
 
